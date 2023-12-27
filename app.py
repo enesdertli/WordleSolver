@@ -18,7 +18,6 @@ def choose_random_word_from_list(filtered_words):
     if not filtered_words:
         print("Warning: Filtered words list is empty!")
         raise ValueError("Filtered words list is empty!")
-    print(filtered_words[:5])
     return random.choice(filtered_words)
 
 
@@ -26,7 +25,7 @@ def check_feedback(feedback_sequence, guessed_word, word):
     for i, feedback in enumerate(feedback_sequence):
         if feedback == '0' and guessed_word[i] in word:
             return False
-        elif feedback == '1' and guessed_word[i] not in word or guessed_word[i] == word[i]:
+        elif feedback == '1' and (guessed_word[i] not in word or guessed_word[i] == word[i]):
             return False
         elif feedback == '2' and guessed_word[i] != word[i]:
             return False
@@ -72,7 +71,10 @@ def main():
 
     selected_word, words = choose_random_word_from_txt(file_path)
 
+    count = 0
+
     while not solved:
+        count += 1
         for _ in selected_word:
             actions.send_keys(_)
             actions.perform()
@@ -87,13 +89,19 @@ def main():
     
         guessed_word = selected_word
         filtered_words = filter_words(feedback_sequence, guessed_word, words)
-        selected_word = choose_random_word_from_list(filtered_words)
+        
+        with open("test_"+str(count),'w',encoding='utf-8') as output_file:
+            for word in filtered_words:
+                output_file.write(word + "\n")
+        words = filtered_words
+
+        selected_word = choose_random_word_from_list(words)
+        print(f"Selected word: {selected_word}")
 
         if not filtered_words:
             print("No suitable word found!")
             continue
 
-        print(f"Selected word: {selected_word}")
 
 if __name__ == "__main__":
     main()
