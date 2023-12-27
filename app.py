@@ -62,7 +62,6 @@ def main():
         actions = ActionChains(driver)
         actions.click()
         actions.perform()
-        print("Successfully clicked!")
         time.sleep(2)
     except:
         # Temporary workaround: manually close button
@@ -71,7 +70,14 @@ def main():
 
     selected_word, words = choose_random_word_from_txt(file_path)
 
+
     count = 0
+
+    print("Meanings of the numbers in this sequence:")
+    print("  0: The guessed letter is incorrect.")
+    print("  1: The guessed letter is correct, but in the wrong position.")
+    print("  2: The guessed letter is correct and in the correct position.")
+    print(f"\nFirst random selected word is {selected_word}")
 
     while not solved:
         count += 1
@@ -80,11 +86,15 @@ def main():
         actions.send_keys(Keys.ENTER)
         actions.perform()
         
-        feedback_sequence = input("Feedback Sequence > 0,1,2): ")
-        if feedback_sequence.lower() in ['na','done']:
+        print("\nTo end the game, type 'na'.")
+        print("To change the selected word, type 'ch'.")
+
+        feedback_sequence = input("Feedback Sequence: 0, 1, 2 : ")
+        if feedback_sequence.lower() == 'na':
             solved = True
-            print("Oyun bitti")
+            print("game completed")
             break
+
     
         guessed_word = selected_word
         filtered_words = filter_words(feedback_sequence, guessed_word, words)
@@ -98,10 +108,14 @@ def main():
         time.sleep(1)
 
         selected_word = choose_random_word_from_list(words)
-        print(f"Selected word: {selected_word}")
+        selected_word_replace = selected_word
+        selected_word_replace = selected_word.replace('ı', 'i').replace('ö', 'o').replace('ü', 'u').replace('ş','s').replace('ğ','g').replace('ç','c')
+
+        print(f"\nselected word: {selected_word_replace}")
+        print("#############################")
 
         if not filtered_words:
-            print("No suitable word found!")
+            print("no suitable word found!")
             continue
 
 
