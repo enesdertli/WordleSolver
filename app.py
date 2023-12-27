@@ -77,11 +77,10 @@ def main():
         count += 1
         for _ in selected_word:
             actions.send_keys(_)
-            actions.perform()
         actions.send_keys(Keys.ENTER)
         actions.perform()
         
-        feedback_sequence = input("Geri bildirim (0,1,2 sıralı bir dizi): ")
+        feedback_sequence = input("Feedback Sequence > 0,1,2): ")
         if feedback_sequence.lower() in ['na','done']:
             solved = True
             print("Oyun bitti")
@@ -89,11 +88,14 @@ def main():
     
         guessed_word = selected_word
         filtered_words = filter_words(feedback_sequence, guessed_word, words)
+        time.sleep(2)
         
-        with open("test_"+str(count),'w',encoding='utf-8') as output_file:
+        with open("test_"+str(count)+".txt",'w',encoding='utf-8') as output_file:
             for word in filtered_words:
                 output_file.write(word + "\n")
+    
         words = filtered_words
+        time.sleep(1)
 
         selected_word = choose_random_word_from_list(words)
         print(f"Selected word: {selected_word}")

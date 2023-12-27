@@ -5,6 +5,7 @@ __pycache__/
 *.exe
 app.ipynb
 5-letter*.txt
+test*.txt
 # C extensions
 *.so
 
